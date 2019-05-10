@@ -65,11 +65,11 @@ int main()
   3c:	c9                   	leaveq 
   3d:	c3                   	retq
 ```
-> 30:将edx 的值放入esi
-> 32:将eax的值放入edi
-> 34:调用add方法
-> 4: 将edi的压入栈中
-> 7: 将esi的压入栈中
+> * 30:将edx 的值放入esi
+> * 32:将eax的值放入edi
+> * 34:调用add方法
+> * 4: 将edi的压入栈中
+> * 7: 将esi的压入栈中
 
 ## 不使用
 ### c源码

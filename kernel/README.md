@@ -9,6 +9,7 @@
 > * 内核启动文件
 > 
 > /usr/include/ //头文件 内核源码：make headers_install
+> 
 > /usr/src/kernels/XXX   //内核源代码路径
 
 ### 源码包说明

@@ -64,6 +64,40 @@ int main()
   4a:	c3                   	retq
 ```
 
+### 使用gdb看看寄存器
+准备工作
+```
+
+```
+寄存器
+```
+(gdb) info registers 
+rax            0x40052b	4195627
+rbx            0x0	0
+rcx            0x400570	4195696
+rdx            0x7fffffffe418	140737488348184
+rsi            0x7fffffffe408	140737488348168
+rdi            0x1	1
+rbp            0x7fffffffe320	0x7fffffffe320
+rsp            0x7fffffffe308	0x7fffffffe308
+r8             0x7ffff7dd5e80	140737351868032
+r9             0x0	0
+r10            0x7fffffffe170	140737488347504
+r11            0x7ffff7a3ba20	140737348090400
+r12            0x400400	4195328
+r13            0x7fffffffe400	140737488348160
+r14            0x0	0
+r15            0x0	0
+rip            0x400533	0x400533 <main+8>
+eflags         0x212	[ AF IF ]
+cs             0x33	51
+ss             0x2b	43
+ds             0x0	0
+es             0x0	0
+fs             0x0	0
+gs             0x0	0
+```
+
 ### 寄存器
 > 计算过程中暂存数据
 

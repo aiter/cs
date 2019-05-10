@@ -70,3 +70,65 @@ int main()
 > 34:调用add方法
 > 4: 将edi的压入栈中
 > 7: 将esi的压入栈中
+
+## 不使用
+### c源码
+```
+// function_example0.c
+#include <stdio.h>
+int static add()
+{
+    return 4;
+}
+
+int main()
+{
+    int x = 5;
+    int y = 10;
+    int u = add();
+}
+```
+编译
+```
+gcc -g -c function_example0.c
+objdump -d -S function_example0.o
+```
+汇编
+```
+function_example0.o:     file format elf64-x86-64
+
+
+Disassembly of section .text:
+
+0000000000000000 <add>:
+// function_example0.c
+#include <stdio.h>
+int static add()
+{
+   0:	55                   	push   %rbp
+   1:	48 89 e5             	mov    %rsp,%rbp
+    return 4;
+   4:	b8 04 00 00 00       	mov    $0x4,%eax
+}
+   9:	5d                   	pop    %rbp
+   a:	c3                   	retq   
+
+000000000000000b <main>:
+
+int main()
+{
+   b:	55                   	push   %rbp
+   c:	48 89 e5             	mov    %rsp,%rbp
+   f:	48 83 ec 10          	sub    $0x10,%rsp
+    int x = 5;
+  13:	c7 45 fc 05 00 00 00 	movl   $0x5,-0x4(%rbp)
+    int y = 10;
+  1a:	c7 45 f8 0a 00 00 00 	movl   $0xa,-0x8(%rbp)
+    int u = add();
+  21:	b8 00 00 00 00       	mov    $0x0,%eax
+  26:	e8 d5 ff ff ff       	callq  0 <add>
+  2b:	89 45 f4             	mov    %eax,-0xc(%rbp)
+}
+  2e:	c9                   	leaveq 
+  2f:	c3                   	retq
+```

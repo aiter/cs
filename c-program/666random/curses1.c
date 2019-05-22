@@ -3,15 +3,28 @@
 #include<curses.h>
 
 int main() {
-	initscr();
+    initscr();
 
-	move(5,15);
-	printw("%s", "Hello world");
-	refresh();
+    move(5,15);
+    printw("%s", "Hello world");
+    refresh();
+    sleep(2);
 
-	sleep(2);
+        int i;
+        for(i = 0; i < 100; i++) {
+                clear();
+                move(5,15);
+                printw("%d", i);
+                refresh();
+                usleep(100000);
+        }
 
-	endwin();
-	exit(EXIT_SUCCESS);
+    clear();
+    move(15,15);
+    printw("%s", "Hello World");
+    refresh(); 
+    sleep(3);
+    
+    endwin();
+    exit(EXIT_SUCCESS);
 }
-

@@ -33,3 +33,5 @@ typedef void	Sigfunc(int);
 
 #define min(a,b)	((a) < (b) ? (a) : (b))
 #define max(a,b)	((a) > (b) ? (a) : (b))
+
+#endif /*_APUE_H*/

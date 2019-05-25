@@ -16,7 +16,7 @@ off_t lseek(int fd, off_t offset, int whence);
 > 描述符是管道、FIFO、网络socket，不能lseek，返回-1
 
 ### 示例lseek1.c
-```
+```c
 #include "apue.h"
 
 int main(void)

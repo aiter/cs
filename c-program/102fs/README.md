@@ -1,3 +1,7 @@
+## open & openat
+```c
+
+```
 
 ## lseek
 ```c
@@ -12,8 +16,10 @@ off_t lseek(int fd, off_t offset, int whence);
 |SEEK_CUR|距离当前处加offset个字节，offset可正可负|
 |SEEK_END|文件长度(结束)加offset个字节，offset可正可负|
 
-> 成功，就返回文件的偏移量
-> 描述符是管道、FIFO、网络socket，不能lseek，返回-1
+> * 成功，就返回文件的偏移量
+> * 描述符是管道、FIFO、网络socket，不能lseek，返回-1
+> * 普通文件，offset必须是非负值。
+> * offset可以为负值。判断返回值时，判断是否等于-1，不要使用是否小于0
 
 ### 示例lseek1.c
 ```c

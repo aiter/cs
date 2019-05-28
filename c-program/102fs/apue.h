@@ -35,5 +35,6 @@ typedef void	Sigfunc(int);
 #define max(a,b)	((a) > (b) ? (a) : (b))
 
 void err_sys(const char *, ...) __attribute__((noreturn));
+void err_ret(const char *, ...); 
 
 #endif /*_APUE_H*/

@@ -1,0 +1,43 @@
+#include "apue.h"
+#include <sys/shm.h>
+
+#define ARRAY_SIZE 4000
+#define MALLOC_SIZE 10000
+#define SHM_SIZE 10000
+#define SHM_MODE 0600
+
+char array[ARRAY_SIZE];
+
+int main(void)
+{
+	int shmid;
+	char *ptr, *shmptr;
+
+	printf("array[] from %p to %p\n", (void *)&array[0], (void *)&array[ARRAY_SIZE]);
+	printf("stack around %p\n", (void *)&shmid);
+
+	//if ((ptr = (char *)malloc(MALLOC_SIZE)) == NULL)
+	if ((ptr = malloc(MALLOC_SIZE)) == NULL)
+		err_sys("malloc error");
+	printf("malloc from %p to %p\n", (void *)ptr, (void *)ptr+MALLOC_SIZE);
+
+	if ((shmid = shmget(IPC_PRIVATE, SHM_SIZE, SHM_MODE)) < 0)
+		err_sys("shmget error");
+	if ((shmptr = shmat(shmid, 0, 0)) == (void *)-1)
+		err_sys("shmat error");
+	printf("shared memory attached from %p to %p\n", (void *)shmptr, (void *)shmptr + SHM_SIZE);
+
+    if (shmctl(shmid, IPC_RMID, 0) < 0)
+		err_sys("shmctl error");
+
+	exit(0);
+}
+/**
+ * Intel 64位处理器
+ * 共享存储段紧靠在栈之下
+ * array[] from 0x6020c0 to 0x603060 //为初始化的数据(bss)
+ * stack around 0x7ffc8d4a4f2c  //栈
+ * malloc from 0x1dcf010 to 0x1dd1720 //堆
+ * shared memory attached from 0x7eff28321000 to 0x7eff28323710 //共享存储
+ */
+

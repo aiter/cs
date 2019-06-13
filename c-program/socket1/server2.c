@@ -10,18 +10,14 @@
 int main() {
 	int server_sockfd, client_sockfd;
 	int server_len, client_len;
-	//struct sockaddr_un server_address;
-	//struct sockaddr_un client_address;
 	struct sockaddr_in server_address;
 	struct sockaddr_in client_address;
-	//删除以前的套接字，为服务器创建一个未命名的套接字
-	//unlink("server_socket");
+	//server
 	server_sockfd = socket(AF_INET, SOCK_STREAM, 0);
 	//命名套接字：
 	server_address.sin_family = AF_INET;
 	server_address.sin_addr.s_addr = inet_addr("127.0.0.1");
 	server_address.sin_port = htons(9734);
-	//strcpy(server_address.sun_path, "server_socket");
 	server_len = sizeof(server_address);
 	bind(server_sockfd, (struct sockaddr *)&server_address, server_len);
 	//创建一个连接队列，开始等待客户进行连接：
@@ -33,6 +29,7 @@ int main() {
 		client_len = sizeof(client_address);
 		client_sockfd = accept(server_sockfd, (struct sockaddr *)&client_address, &client_len);
 		//对client_sockfd套接字上的客户进行读写操作
+		//直接使用当前“主”进程处理链接
 		read(client_sockfd, &ch, 1);
 		ch++;
 		write(client_sockfd, &ch, 1);

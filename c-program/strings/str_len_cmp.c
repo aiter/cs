@@ -4,7 +4,8 @@
 
 int main()
 {
-	char str[] = "Look Here";
+	char str[16] = "Look Here";
+	//strlen 是字符串的实际长度，不是内存占用的长度
 	printf("Number of characters in \'%s\' is %d\n", str, strlen(str));
 
 

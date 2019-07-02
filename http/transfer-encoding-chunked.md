@@ -1,5 +1,6 @@
 ### 使用Transfer-Encoding:chunked 保持长连接
 > client 一直等到数据，server有数据就发送
+> 不依赖其他发布、订阅的中间件。k8s的List-Watch使用这种方式
 
 ```go
 package main

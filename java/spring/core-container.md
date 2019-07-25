@@ -21,3 +21,4 @@
 > spring-boot-starter-data-redis|--> spring-boot-starter
 								|--> spring-data-redis 
 								|--> lettuce-core
+> [Spring Data Redis](https://docs.spring.io/spring-data/data-redis/docs/current/reference/html/)

@@ -24,3 +24,14 @@
 * presentation objects(such as Struts Action instances)
 * infrastructure objects(such as Hibernate SessionFactories)
 * JMS Queues
+
+### Bean
+* Class
+* Name
+* Scope
+* Constructor arguments
+* Properties
+* Autowiring mode
+* Lazy initialization mode
+* Initialaztion method
+* Destruction method

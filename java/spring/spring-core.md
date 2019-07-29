@@ -35,3 +35,7 @@
 * Lazy initialization mode
 * Initialaztion method
 * Destruction method
+
+#### Lazy-initialized Beans
+> create a bean instance when it is first requested, rather than at startup
+> 如果另一个bean依赖这个lazy bean，那么这个lazy bean不会再是lazy初始化了

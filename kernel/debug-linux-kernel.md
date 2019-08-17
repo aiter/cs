@@ -14,7 +14,7 @@ net.ipv4.ip_forward=1
 iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE
 ```
 
-### 下载ubuntu iso文件
+### 下载ubuntu iso安装文件
 ```
 wget http://releases.ubuntu.com/18.04/ubuntu-18.04.3-live-server-amd64.iso
 ```
@@ -28,7 +28,8 @@ qemu-kvm -hda ubuntu-18.04.3-live-server-amd64.img -cdrom ubuntu-18.04.3-live-se
 
 安装完成后，退出cdrom,使用镜像启动
 
-
+### 下载centos的镜像文件，已安装好的镜像
+https://cloud.centos.org/centos/7/images/
 
 ### 
 virsh dumpxml ubuntutest|grep vnc

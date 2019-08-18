@@ -34,3 +34,35 @@ https://cloud.centos.org/centos/7/images/
 ### 
 virsh dumpxml ubuntutest|grep vnc
 
+### 修改网络
+> /etc/netplan/50-cloud-init.yaml
+```shell
+network:
+    ethernets:
+        ens3:
+                addresses: [192.168.57.100/24]
+                gateway4: 192.168.57.1
+                dhcp4: no
+                nameservers:
+                        addresses: [8.8.8.8,114.114.114.114]
+                optional: true
+    version: 2
+
+```
+> netplan apply
+
+### 下载kernel
+> ubuntu
+apt-get install linux-source-4.15.0
+> /usr/src
+tar vjxkf linux-source-4.15.0.tar.bz2
+
+### 内核编译
+apt-get install libncurses5-dev libssl-dev bison flex libelf-dev gcc make openssl libc6-dev
+> 编译选项
+make menuconfig
+> 编译
+nohup make -j8 > make1.log 2>&1 &
+nohup make modules_install > make2.log 2>&1 &
+nohup make install > make3.log 2>&1 &
+

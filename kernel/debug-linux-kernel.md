@@ -70,3 +70,8 @@ nohup make install > make3.log 2>&1 &
 > 内核安装
 > 现在检查一下/boot目录是否生成了initrd镜像文件，一般通过上述步骤就会在/boot目录下生成满足内核启动条件的vmlinuz、initrd.img（当然/boot下附带还有System.map、config），如果/boot下没有initrd.img，则需要执行cd /boot 后通过mkinitrd -oinitrd.img- 生成initrd.img
 
+```
+make : compiles and links the kernel image. ...
+make install : installs your built kernel to /vmlinuz .
+make modules_install : installs your kernel modules to /lib/modules or /lib/modules/<version> .
+```

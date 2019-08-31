@@ -3,6 +3,12 @@
 ### pidstat(sysstat)
 ### mpstat(sysstat)
 
+### dstat
+
+### iostat
+
+### ifstat
+
 ### /proc/interrupts
 
 ### top ps uptime
@@ -11,6 +17,9 @@
 > perf top 
 > perf report -g
 > perf record
+
+### strace
+> 系统调用的跟踪的工具
 
 ### pstree
 > display a tree of processes

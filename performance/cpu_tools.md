@@ -24,6 +24,9 @@
 ### pstree
 > display a tree of processes
 
+### sar
+> Collect, report, or save system activity information
+
 ## 压测工具
 ### stress
 > 系统压力测试工具
@@ -39,3 +42,6 @@
 ### ab
 > http 压测
 > ab -c 10 -n 1000 http://xxx.xxx.com
+
+### hping3
+> send (almost) arbitrary TCP/IP packets to network hosts

@@ -3,7 +3,7 @@
 > 运行之前，需要检查类型，比如在java/c++/c/golang,在编译阶段检查类型。
 
 > 编译阶段检查`fmt.Println(a + "c")`
-```
+```golang
 import "fmt"
 
 func foo(a int) {
@@ -27,7 +27,7 @@ func main() {
 > 运行期间，确定变量的类型.`c=5`,"确定"c是int,`c = 'hi'`,"确定"c是string
 
 > javascript/python
-```
+```python
 >>> def foo(a):
 ...     c = 5
 ...     print c
@@ -108,11 +108,10 @@ TypeError: cannot concatenate 'str' and 'int' objects
 > javascript
 
 > : 动态类型，弱类型
-```
+```javascript
 function foo(a,b) {
     return a + b;
 }
-undefined
 foo(1,3)
 4
 foo(1,"ccc")

@@ -1,6 +1,7 @@
 ### 动态类型 & 静态类型
 静态类型
 > 运行之前，就检查类型，比如在java/c++/c/golang,在编译阶段就检查类型。
+
 > 编译就检查`fmt.Println(a + "c")`
 ```
 import "fmt"
@@ -24,7 +25,9 @@ func main() {
 
 动态类型
 > 运行期间，判断类型
+
 > javascript/python
+
 > 可动态判断,没有问题
 ```
 >>> def foo(a):
@@ -56,6 +59,7 @@ hi
 ### 强类型 & 弱类型
 强类型
 > 一个变量指定了类型，如果不强制转换，一直就是这个类型
+
 > c/c++/c#/java/go
 
 弱类型
@@ -63,6 +67,7 @@ hi
 
 ### examples
 > 如下的golang，编译不通
+
 > : golang 是静态类型(编译时，检查)，强类型(不能将字符串"3"和数字5,相加)语言
 ```golang
 package main
@@ -84,6 +89,7 @@ func main() {
 ```
 
 > 如下的python，在调用foo(-1),走else逻辑时，才出错
+
 > : python 是动态类型(执行时，才检查)，强类型(不能将字符串"3"和数字5,相加)语言
 ```python
 def foo(a):
@@ -102,6 +108,7 @@ TypeError: cannot concatenate 'str' and 'int' objects
 ```
 
 > javascript
+
 > : 动态类型，弱类型
 ```
 function foo(a,b) {

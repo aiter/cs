@@ -35,6 +35,8 @@ class Youku(VideoExtractor):
 > python setup.py bdist_egg 打包一个test的包。这个测试包，可以直接复制到site-packages目录。和install效果一样
 >
 > python setup.py install 安装包到/usr/local/lib/python2.7/site-packages/demo-0.1-py2.7.egg
+>
+> python setup.py delelop 开发阶段使用
 
 setup.py
 ```shell

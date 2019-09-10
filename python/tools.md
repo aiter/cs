@@ -30,4 +30,62 @@ class Youku(VideoExtractor):
 ### 打包发布工具
 * pip
 * setuptools
-* 
+> python setup.py build 直接在当前目录下，build一个包 
+>
+> python setup.py bdist_egg 打包一个test的包。这个测试包，可以直接复制到site-packages目录。和install效果一样
+>
+> python setup.py install 安装包到/usr/local/lib/python2.7/site-packages/demo-0.1-py2.7.egg
+
+setup.py
+```shell
+from setuptools import setup, find_packages
+setup(
+    name = "demo",
+    version = "0.1",
+    packages = find_packages(),
+)
+```
+demo/__init__.py
+```
+  1 #!/usr/bin/env python
+  2 #-*- coding:utf-8 -*-
+  3 
+  4 def test():
+  5     print "hello world!"
+  6 
+  7 if __name__ == '__main__':
+  8     test()
+  9
+```
+build后目录
+```shell
+.
+├── build
+│   ├── bdist.macosx-10.14-x86_64
+│   └── lib
+│       └── demo
+│           └── __init__.py
+├── demo
+│   ├── __init__.py
+│   └── __init__.pyc
+├── demo.egg-info
+│   ├── PKG-INFO
+│   ├── SOURCES.txt
+│   ├── dependency_links.txt
+│   └── top_level.txt
+├── dist
+│   └── demo-0.1-py2.7.egg
+└── setup.py
+```
+
+
+### 安装路劲
+> pip3
+```shell
+/usr/local/lib/python3.7/site-packages
+
+/usr/local/lib/python2.7/site-packages
+/usr/lib/python2.7/
+
+python安装：/usr/local/Cellar/python/3.7.2_1/
+```

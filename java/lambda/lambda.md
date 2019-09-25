@@ -4,3 +4,35 @@
 * 可选的返回关键字：如果主体只有一个表达式返回值则编译器会自动返回值，大括号需要指定明表达式返回了一个数值。
 
 ### function & stream
+@FunctionalInterface
+* Consumer<T>
+> void accept(T t);
+* Function<T, R>
+> R apply(T t);
+* Predicate<T>
+> boolean test(T t);
+* Supplier<T>
+> T get();
+```java
+    public static void main(String[] args) {
+
+        Consumer<String> consumer = str -> System.out.println(str);
+        consumer.accept("aiter");
+
+        Supplier<List<String>> supplier = () -> new ArrayList<String>() {{
+            add("6");
+            add("80");
+            add("70go");
+        }};
+
+        Predicate<String> predicate = str -> str.length() > 1;
+
+        Function<String, String> function = str -> str + "_tail";
+
+        supplier.get()
+            .stream()
+            .filter(predicate)
+            .map(function)
+            .forEach(consumer);
+    }
+```

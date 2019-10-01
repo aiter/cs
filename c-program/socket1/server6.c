@@ -90,6 +90,10 @@ int main(int argc, char **arvg) {
 
 	listen_fd = tcp_nonblocking_server_listen(SERV_PORT);
 
+	/** 
+	 * 读的set，写的set，异常的set。
+	 *
+	 */
 	fd_set readset, writeset, exset;
 	FD_ZERO(&readset);
 	FD_ZERO(&writeset);
@@ -102,6 +106,7 @@ int main(int argc, char **arvg) {
 		FD_ZERO(&writeset);
 		FD_ZERO(&exset);
 
+		//将监听的fd添加入读的set
 		FD_SET(listen_fd, &readset);
 
 		for (i = 0; i < FD_INIT_SIZE; ++i) {
@@ -115,15 +120,18 @@ int main(int argc, char **arvg) {
 			}
 		}
 
+		//调用select。注意第一个参数是maxfd+1
 		if (select(maxfd + 1, &readset, &writeset, &exset, NULL) < 0) {
 			error(1, errno, "select error");
 		}
 
+		//监听的fd
 		if (FD_ISSET(listen_fd, &readset)) {
 			printf("listening socket readable\n");
 			sleep(5);
 			struct  sockaddr_storage ss;
 			socklen_t slen = sizeof(ss);
+			//调用accept，返回新的fd
 			int fd = accept(listen_fd, (struct sockaddr *) &ss, &slen);
 			if (fd < 0) {
 				error(11, errno, "accept failed");
@@ -131,6 +139,7 @@ int main(int argc, char **arvg) {
 				error(1, 0 , "too many connections");
 				close(fd);
 			}else {
+				//设置新fd为非阻塞
 				make_nonblocking(fd);
 				if (buffer[fd]->connect_fd == 0) {
 					buffer[fd]->connect_fd = fd;
@@ -145,9 +154,11 @@ int main(int argc, char **arvg) {
 			if (i == listen_fd)
 				continue;
 
+			//有fd可读
 			if (FD_ISSET(i, &readset)) {
 				r = onSocketRead(i, buffer[i]);
 			}
+			//有fd可写
 			if (r == 0 && FD_ISSET(i, &writeset)) {
 				r = onSocketWrite(i, buffer[i]);
 			}

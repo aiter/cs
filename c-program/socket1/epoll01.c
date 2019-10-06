@@ -13,4 +13,30 @@ char rot13_char(char c) {
 }
 
 int main(int argc, char **argv) {
+	int listen_fd, socket_fd;
+	int n, i;
+	int efd;
+	struct epoll_event event;
+	struct epoll_event *events;
+
+	listen_fd = tcp_nonblocking_server_listen(SERV_PORT);
+
+	efd = epoll_create1(0);
+	if (efd == -1) {
+		error(1, errno, "epoll create failed");
+	}
+
+    event.data.fd = listen_fd;
+	event.events = EPOLLIN | EPOLLET;
+	if (epoll_ctl(efd, EPOLL_CTL_ADD, listen_fd, &event) == -1) {
+		error(1, errno, "epoll_ctl add listen fd failed");
+	}
+
+	events = calloc(MAXEVENTS, sizeof(event));
+
+	while (1) {
+		n = epoll_wait(efd, events, MAXEVENTS, -1);
+		printf("epoll_wait wakeup\n");
+		for (i = 0; i < n; i++) {
+
 

@@ -38,5 +38,54 @@ int main(int argc, char **argv) {
 		n = epoll_wait(efd, events, MAXEVENTS, -1);
 		printf("epoll_wait wakeup\n");
 		for (i = 0; i < n; i++) {
+			if ((events[i].events & EPOLLERR) || (events[i].events & EPOLLHUP) || (!(events[i].events & EPOLLIN))) {
+				fprint(stderr, "epoll error\n");
+				close(events[i].data.fd);
+				continue;
+			} else if (listen_fd == events[i].data.fd) {
+				struct sockaddr_storage ss;
+				socklen_t slen = sizeof(ss);
+				int fd  = accept(listen_fd, (struct sockaddr *)&ss, &slen);
+				if (fd < 0) {
+					error(1, errno, "accept failed");
+				}else {
+					make_nonbocking(fd);
+					event.data.fd = fd;
+					event.events = EPOLLIN | EPOLLET; //edge-triggered
+					if (epoll_ctl(efd, EPOLL_CTL_ADD, fd, &event) == -1){
+						error(1, errno, "epoll_ctl add connection fd failed");
+					}
+				}
+				continue;
+			} else {
+				socket_fd = events[i].data.fd;
+				printf("get event on socket fd == %d \n", socket_fd);
+				while (1) {
+					char buf[512];
+					if ((n = read(socket_fd, buf, sizeof(buf))) < 0 ) {
+						if (errno != EAGAIN) {
+							error(1, errno, "read error");
+							close(socket_fd);
+						}
+						break;
+					}else if (n == 0) {
+						close(socket_fd);
+						break;
+					} else {
+						for (i = 0; i < n; ++i) {
+							buf[i] = rot13_char(buf[i]);
+						}
+						if (write(socket_fd, buf, n) < 0) {
+							error(1, errno, "write error");
+						}
+					}
+				}
+			}
+		}
+	}
+
+	free(events);
+	close(listen_fd);
+}
 
 

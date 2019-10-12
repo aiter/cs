@@ -50,6 +50,6 @@ int main(int c, char **v) {
 	struct TCPserver *tcpServer = tcp_server_init(eventLoop, acceptor, onConnectionCompleted, onMessage, onWriteCompleted, onConnectionClosed, 0);
 	tcp_server_start(tcpServer);
 
-	//main thread
+	//main thread 
 	event_loop_run(eventLoop);
 }

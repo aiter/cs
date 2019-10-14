@@ -13,7 +13,9 @@ typedef struct {
 Thread *thread_array;
 
 typedef struct {
+	//队列长度
 	int number;
+	// fd队列
 	int *fd;
 	int front;
 	int rear;
@@ -30,7 +32,9 @@ void block_queue_init(block_queue *blockQueue, int number) {
 }
 
 void block_queue_push(block_queue *blockQueue, int fd) {
+	//加锁
 	pthread_mutex_lock(&blockQueue->mutex);
+	//放入队尾
 	blockQueue->fd[blockQueue->rear] = fd;
 	if (++blockQueue->rear == blockQueue->number) {
 		blockQueue->rear = 0;
@@ -41,7 +45,9 @@ void block_queue_push(block_queue *blockQueue, int fd) {
 }
 
 int block_queue_pop(block_queue *blockQueue) {
+	//加锁
 	pthread_mutex_lock(&blockQueue->mutex);
+	//队列为空，就wait
 	while (blockQueue->front == blockQueue->rear)
 		pthread_cond_wait(&blockQueue->cond, &blockQueue->mutex);
 	int fd = blockQueue->fd[blockQueue->front];

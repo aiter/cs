@@ -170,6 +170,24 @@ ALTER TABLE tbl_name WAIT N add column ...
 |  update t set k=k+1 where id = 2;  |    |
 |    |  update t set k=k+1 where id= 1;  |
 
+* 一种策略，直接进入等待，直到超时。`innodb_wait_lock_timeout`
+* 另一种策略，发起死锁检测，发现后，让其中的一条事务回滚，另外的事务可以继续。`innodb_deadlock_detect`设置为`on`
+
+# 事务到底是隔离的还是不隔离的
+**begin/start transaction 命令并不是一个事务的起点，在执行他们之后第一个操作innodb表的语句，才是事务真正启动**，如果项马上启动一个事务，使用`start transaction with consistent snapshot`
+
+### 快照是怎么实现的？
+每个事务有一个唯一的事务ID，transaction id。
+
+![](media/15716365948975.png)
+
+#### 实现上
+InnoDB为每个事务构造了一个数组，用来保存事务的启动瞬间，当前正在“活跃”的所有事务ID，
+* 数组里最小ID，记录为低水位值。
+* 当前系统已经创建过的最大事务ID+1，记录为高水位值
+* 这个数组和高水位，就组成了当前事务的一致性视图（read-view）
+
+
  
 
 

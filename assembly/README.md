@@ -8,3 +8,5 @@ hello.s
 ```
 
 https://akaedu.github.io/book/ch18s01.html
+
+https://www.tldp.org/HOWTO/Assembly-HOWTO/hello.html

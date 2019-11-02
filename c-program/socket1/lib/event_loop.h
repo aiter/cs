@@ -6,17 +6,22 @@
 #include "event_dispatcher.h"
 #include "common.h"
 
+// poll
 extern const struct event_dispatcher poll_dispatcher;
+// epoll
 extern const struct event_dispatcher epoll_dispatcher;
 
+//channel Node
 struct channel_element {
 	int type; //1:add 2:delete
 	struct channel *channel;
 	struct channel_element *next;
 };
 
+//event_loop的主要struct
 struct event_loop {
 	int quit;
+	//分发器，看具体的实现
 	const struct event_dispatcher *eventDispatcher;
 
 	void *event_dispatcher_data;

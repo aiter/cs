@@ -49,3 +49,91 @@ void event_loop_channel_buffer_nolock(struct event_loop *eventLoop, int fd, stru
 		eventLoop->pending_tail = channelElement;
 	}
 }
+
+void event_loop_wakeup(struct event_loop *eventLoop) {
+	char one = 'a';
+	ssize_t n = write(eventLoop->socketPair[0], &one, sizeof one);
+	if (n != sizeof one) {
+		LOG_ERR("wakeup event loop thread failed");
+	}
+}
+
+int handleWakeup(void *data) {
+	struct event_loop *eventLoop = (struct event_loop *) data;
+	char one;
+	ssize_t n = read(eventLoop->socketPair[1], &one, sizeof one);
+	if (n != sizeof one) {
+	}
+	yolanda_msgx("wakeup, %s", eventLoop->thread_name);
+}
+
+
+/*
+ * 初始化
+ */
+struct event_loop *event_loop_init() {
+	return event_loop_init_with_name(NULL);
+}
+
+struct event_loop *event_loop_init_with_name(char *thread_name) {
+	struct event_loop *eventLoop = malloc(sizeof(struct event_loop));
+	pthread_mutxt_init(&eventLoop-mutex, NULL);
+	pthread_cond_init(&eventLoop->cond, NULL);
+
+	if (thread_name != NULL) {
+		eventLoop->thread_name = thread_name;
+	} else {
+		eventLoop->thread_name = "main thread";
+	}
+
+	eventLoop->quit = 0;
+	eventLoop->channelMap = malloc(sizeof(struct channel_map));
+	map_init(eventLoop->channelMap);
+
+#ifdef EPOLL_ENABLE	
+	yolanda_msgx("set epoll as dispatcher, %s", eventLoop->thread_name);
+	eventLoop->eventDispatcher = &epoll_dispatcher;
+#else
+	yolanda_msgx("set poll as dispatcher, %s", eventLoop->thread_name);
+	eventLoop->eventDispatcher = &poll_dispatcher;
+#endif
+	eventLoop->event_dispatcher_data = eventLoop->eventDispatcher->init(eventLoop);
+
+	eventLoop->owner_thread_id = pthread_self();
+	if (socketpair(AF_UNIX, SOCK_STREAM, 0, eventLoop->socketPair) < 0) {
+		LOG_ERR("socketpair set failed");
+	}
+	eventLoop->is_handle_pending = 0;
+	eventLoop->pending_head = NULL;
+	eventLoop->pending_tail = NULL;
+
+	struct channel *channle = channel_new(eventLoop->socketPair[1],EVENT_READ, handleWakeup, NULL, eventLoop);
+	event_loop_add_channel_event(eventLoop, eventLoop->socketPair[0], channel);
+
+	return eventLoop;
+}
+
+int event_loop_run(struct event_loop *eventLoop) {
+	assert(eventLoop != NULL);
+
+	struct event_dispathcer *dispatcher = eventLoop->eventDispatcher;
+
+	if (eventLoop->owner_thread_id != pthread_self()) {
+		exit(1);
+	}
+
+	yolanda_msgx("event loop run, %s", eventLoop->thread_name);
+	struct timeval timeval;
+	timeval.tv_sec = 1;
+
+	while (!eventLoop->quit) {
+		// block here to wait I/O event, and get active channels
+		dispatcher->dispatch(eventLoop, &timeval);
+
+		//handle the pending channel
+		event_loop_handle_pending_channel(eventLoop);
+	}
+
+	yolanda_msgx("event loop end, %s", eventLoop->thread_name);
+	return 0;
+}

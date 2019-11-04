@@ -6,6 +6,7 @@
 #include "channel.h"
 #include "utils.h"
 
+// in the i/o thread
 int event_loop_handle_pengding_channel(struct event_loop *eventLoop) {
 	//get the lock
 	pthread_mutex_lock(&eventLoop->mutex);
@@ -41,7 +42,7 @@ void event_loop_channel_buffer_nolock(struct event_loop *eventLoop, int fd, stru
 	channelElement->channel = channel1;
 	channelElement->type = type;
 	channelElement->next = NULL;
-
+    // 第一个元素
 	if (eventLoop->pending_head == NULL) {
 		eventLoop->pending_head = eventLoop->pending_tail = channelElement;
 	} else {
@@ -49,6 +50,131 @@ void event_loop_channel_buffer_nolock(struct event_loop *eventLoop, int fd, stru
 		eventLoop->pending_tail = channelElement;
 	}
 }
+
+int event_loop_do_channel_event(struct event_loop *eventLoop, int fd, struct channel *channel1, int type) {
+	//get the lock
+	pthread_mutex_lock(&eventLoop->mutex);
+	assert(eventLoop->is_handle_pending == 0);
+	event_loop_channel_buffer_nolock(eventLoop, fd, channel1, type);
+	//release the lock
+	pthread_mutex_unlock(&eventLoop->mutex);
+	if (!isInSameThread(eventLoop)) {
+		event_loop_wakeup(eventLoop);
+	} else {
+		event_loop_handle_pending_channle(eventLoop);
+	}
+
+	return 0;
+}
+
+
+int event_loop_add_channel_event(struct event_loop *eventLoop, int fd, struct channel *channel1) {
+	return event_loop_do_channel_event(eventLoop, fd, channel1, 1);
+}
+
+int event_loop_remove_channel_event(struct event_loop *eventLoop, int fd, struct channel *channel1) {
+	return event_loop_do_channel_event(eventLoop, fd, channel1, 2);
+}
+
+int event_loop_update_channel_event(struct event_loop *eventLoop, int fd, struct channel *channel1) {
+	return event_loop_do_channel_event(eventLoop, fd, channel1, 3);
+}
+
+// in the i/o thread
+iint event_loop_handle_pending_add(struct event_loop *eventLoop, int fd, struct channel *channel1) {
+	yolanda_msgx("add channel fd == %d, %s", fd, eventLoop->thread_name);
+	struct channel_map *map = eventLoop->channelMap;
+
+	if (fd < 0)
+		return 0;
+
+	if (fd >= map->nentries) {
+		if (map_make_space(map, fd, sizeof(struct channel *)) == -1)
+			return (-1);
+	}
+
+	//第一次创建，增加
+	if ((map)->entries[fd] == NULL) {
+		map->entries[fd] = channel;
+		//add channel
+		struct event_dispatcher *eventDispatcher = eventLoop->eventDispatcher;
+		eventDispatcher->add(eventLoop, channel);
+		return 1;
+	}
+
+	return 0;
+}
+
+// in the i/o thread
+int event_loop_handle_pending_remove(struct envet_loop *eventLoop, int fd, struct channel *channel1) {
+	struct channel_map *map = eventLoop->channelMap;
+	assert(fd == channel1->fd);
+
+	if (fd < 0)
+		return 0;
+
+	if (fd >= map->nentries)
+		return (-1);
+
+	struct channel *channel2 = map->entries[fd];
+
+	//update dispatcher(multi-thread)here
+	struct event_dispatcher *eventDispatcer = eventLoop->eventDispatcher;
+
+	int retval = 0;
+	if (eventDispatcher->del(eventLoop, channel2) == -1) {
+		retval = -1;
+	} else {
+		retval = 1;
+	}
+
+	map->entries[fd] = NULL;
+	return retval;
+}
+
+// in the i/o thread
+int event_loop_handle_pending_update(struct event_loop *eventLoop, int fd, struct channel *channel) {
+	yolanda_msgx("update channel fd == %d, %s", fd, eventLoop->thread_name);
+	struct channel_map *map = eventLoop->channelMap;
+
+	if (fd < 0)
+		return 0;
+
+	if ((map)->entries[fd] == NULL) {
+		return (-1);
+	}
+
+	//update channel
+	struct event_dispatcher *eventDispatcher = eventLoop->eventDispatcher;
+	eventDispatcher->update(eventLoop, channel);
+}
+
+int channel_event_activate(struct event_loop *eventLoop, int fd, int revents) {
+    struct channel_map *map = eventLoop->channelMap;
+	yolanda_msgx("activate channel fd == %d, revents = %d, %s", fd, revents, eventLoop->thread_name);
+
+	if (fd < 0)
+		return 0;
+
+	if (fd >= map->nentries)
+		return (-1);
+
+	struct channel *channel = map->entries[fd];
+	assert(fd == channel->fd);
+
+	if (revents & (EVENT_READ)) {
+		if (channel->eventReadCallback)
+			channel->eventReadCallback(channel->data);
+	}
+
+	if (revents & (EVENT_WRITE)) {
+		if (channel->eventWriteCallback)
+			channel->eventWriteCallback(channel->data);
+	}
+
+	return 0;
+}
+			
 
 void event_loop_wakeup(struct event_loop *eventLoop) {
 	char one = 'a';

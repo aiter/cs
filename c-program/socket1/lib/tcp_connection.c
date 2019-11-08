@@ -78,6 +78,50 @@ struct tcp_connection *tcp_connection_new(int connection_fd, struct event_loop *
 }
 
 //应用层调用入口
+int tcp_connection_send_data(struct tcp_connection *tcpConnection, void *data, int size) {
+	size_t nwrited = 0;
+	size_t nleft = size;
+	int fault = 0;
 
+	struct channel *channel = tcpConnection->channel;
+	struct buffer *output_buffer = tcpConnection->output_buffer;
 
+	//先往套接字尝试发送数据
+	if (!channel_write_event_is_enabled(channel) && buffer_readable_size(output_buffer) == 0) {
+		nwrited = write(channel->fd, data, size);
+		if (nwrited >= 0) {
+			nleft = nleft -nwrited;
+		} else {
+			nwrited = 0;
+			if (errno !=EWOULDBLOCK) {
+				if (errno == EPIPE || errno == ECONNRESET) {
+					fault = 1;
+				}
+			}
+		}
+	}
+
+	if (!fault && nleft > 0) {
+		//拷贝到Buffer中，Buffer的数据由框架接管
+		buffer_append(output_buffer, data + nwrited, nleft);
+		if (!channel_write_event_enable(channel)) {
+			channel_write_event_enable(channel);
+		}
+	}
+
+	return nwrited;
+}
+
+int tcp_connection_send_buffer(struct tcp_connection *tcpConnection, struct buffer *buffer) {
+	int size = buffer_readable_size(buffer);
+	int result = tcp_connection_send_data(tcpConnection, buffer->data + buffer->readIndex, size);
+	buffer->readIndex += size;
+	return result;
+}
+
+void tcp_connection_shutdown(struct tcp_connection *tcpConnection) {
+	if (shutdown(tcpConnection->channel->fd, SHUT_WR) < 0) {
+		yolanda_msgx("tcp_connection_shutdown failed, socket == %d", tcpConnection->channel->fd);
+	}
+}
 

@@ -53,4 +53,28 @@ void *epoll_init(struct event_loop *eventLoop) {
 	return epollDispatcherData;
 }
 
+void epoll_add(struct event_loop *eventLoop, struct channel *channel1) {
+	epoll_dispatcher_data *pollDispatcherData = (epoll_dispather_data *) eventLoop->event_dispatcher_data;
+
+	int fd = channel1->fd;
+	int events = 0;
+	if (channel1->events & EVENT_READ) {
+		events = events | EPOLLIN;
+	}
+	if (channel1->events & EVENT_WRITE) {
+		events = events | EPOLLOUT;
+	}
+
+	struct epoll_event event;
+	event.data.fd = fd;
+	event.events = events;
+	if (epoll_ctl(pollDispatcherData->efd, EPOLL_CTL_ADD, fd, &event) == -1) {
+		error(1, errno, "epoll_ctl add fd failed");
+	}
+
+	return 0;
+}
+
+
+	
 

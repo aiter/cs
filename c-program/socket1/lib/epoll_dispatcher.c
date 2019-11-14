@@ -75,6 +75,54 @@ void epoll_add(struct event_loop *eventLoop, struct channel *channel1) {
 	return 0;
 }
 
+int epoll_del(struct event_loop *eventLoop, struct channel *channel1) {
+	epoll_dispatcher_data *pollDispatcherData = (epoll_dispatcher_data *) eventLoop->event_dispatcher_data;
+
+	int fd = channel1->fd;
+
+	int events = 0;
+	if (channel1->events & EVENT_READ) {
+		events = events | EPOLLIN;
+	}
+
+	if (channel1->events & EVENT_WRITE) {
+		events = events | EPOLLOUT;
+	}
+
+	struct epoll_event event;
+	event.data.fd = fd;
+	event.events = events;
+	if (epoll_ctl(polDispatcherData->efd, EPOLL_CTL_DEL, fd, &event) == -1) {
+		error(1, errno, "epoll_ctl delete fd failed");
+	}
+
+	return 0;
+}
+
+int epoll_update(struct event_loop *eventLoop, struct channel *channel1) {
+	epoll_dispatcher_data *pollDispatcherData = (epoll_dispatcher_data *) eventLoop->event_dispatcher_data;
+
+	int fd = channel1->fd;
+
+	int events = 0;
+	if (channel1->events & EVENT_READ) {
+		events = events | EPOLLIN;
+	}
+
+	if (channel1->events & EVENT_WRITE) {
+		events = events | EPOLLOUT;
+	}
+
+	struct epoll_event event;
+	event.data.fd = fd;
+	event.events = events;
+	if (epoll_ctl(polDispatcherData->efd, EPOLL_CTL_MOD, fd, &event) == -1) {
+		error(1, errno, "epoll_ctl modify fd failed");
+	}
+
+	return 0;
+}
+
 
 	
 

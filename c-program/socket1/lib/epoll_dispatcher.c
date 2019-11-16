@@ -123,6 +123,41 @@ int epoll_update(struct event_loop *eventLoop, struct channel *channel1) {
 	return 0;
 }
 
+int epoll_dispatch(struct event_loop *eventLoop, struct timeval *timeval) {
+	epoll_dispatcher_data *pollDispatcherData = (epoll_dispatcher_data *) eventLoop->event_dispatcher_data;
+	int i,n;
 
-	
+	n = epoll_wait(epollDispatcherData->efd, epollDispatcherData->events, MAXEVENTS, -1);
+	yolanda_msgx("epoll_wait wakeup, %s", eventLoop->thread_name);
+	for (i = 0; i < n; i++) {
+		if ((epollDispatcherData->events[i].events & EPOLLERR) || (epollDispatcherData->events[i].events & EPOLLHUP)) {
+			fprintf(stderr, "epoll error\n");
+			close(epollDispatcherData->events[i].data.fd);
+			continue;
+		}
 
+		if (epollDispatcherData->events[i].events & EPOLLIN) {
+			yolanda_msgx("get message channel fd==%d for read,%s", epollDispatcherData->events[i].data.fd, eventLoop->thread_name);
+			channel_event_activate(eventLoop, epollDispatcherData->events[i].data.fd, EVENT_READ);
+		}
+
+
+		if (epollDispatcherData->events[i].events & EPOLLOUT) {
+			yolanda_msgx("get message channel fd==%d for write,%s", epollDispatcherData->events[i].data.fd, eventLoop->thread_name);
+			channel_event_activate(eventLoop, epollDispatcherData->events[i].data.fd, EVENT_WRITE);
+		}
+	}
+
+	return 0;
+}
+
+void epoll_clear(struct event_loop *eventLoop) {
+	epoll_dispatcher_data *epollDispatcherData = (epoll_dispatcher_data *) eventLoop->event_dispatcher_data;
+
+	free(epollDispatcherData->events);
+	close(epollDispatcherData->efd);
+	free(epollDispatcherData);
+	eventLoop->event_dispatcher_data = NULL;
+
+	return;
+}

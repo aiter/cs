@@ -13,6 +13,9 @@ typedef struct {
 	struct epoll_event *events;
 } epoll_dispatcher_data;
 
+/**
+ * 初始化
+ */
 static void *epoll_init(struct event_loop *);
 
 static int epoll_add(struct event_loop *, struct channel *channel1);

@@ -27,7 +27,7 @@ int handle_read(void *data) {
 //发送缓冲区可以往外写
 //把channel 对应的output_buffer不断往外发送
 int handle_write(void *data) {
-	struct tcp_connection *tcpConnection - (struct tcp_connection *)data;
+	struct tcp_connection *tcpConnection = (struct tcp_connection *)data;
 	struct event_loop *eventLoop = tcpConnection->eventLoop;
 	assertInSameThread(eventLoop);
 
@@ -51,7 +51,7 @@ int handle_write(void *data) {
 	}
 }
 
-struct tcp_connection *tcp_connection_new(int connection_fd, struct event_loop *eventLoop, connetion_completed_call_back connectionCompletedCallBack, connetion_closed_call_back connectionClosedCallBack, message_call_back messageCallBack, write_completed_call_back writeCompletedCallBack) {
+struct tcp_connection *tcp_connection_new(int connection_fd, struct event_loop *eventLoop, connection_completed_call_back connectionCompletedCallBack, connection_closed_call_back connectionClosedCallBack, message_call_back messageCallBack, write_completed_call_back writeCompletedCallBack) {
 	struct tcp_connection *tcpConnection = malloc(sizeof(struct tcp_connection));
 	tcpConnection->writeCompletedCallBack = writeCompletedCallBack;
 	tcpConnection->messageCallBack = messageCallBack;
@@ -62,11 +62,11 @@ struct tcp_connection *tcp_connection_new(int connection_fd, struct event_loop *
 	tcpConnection->output_buffer = buffer_new();
 
 	char *buf = malloc(16);
-	sprintf(buf, "connection-%d\0", connected_fd);
+	sprintf(buf, "connection-%d\0", connection_fd);
 	tcpConnection->name = buf;
 
 	//add event read for the new connection
-	struct channel *channel1 = channel_new(connected_fd, EVENT_READ, handle_read, handle_write, tcpConnection);
+	struct channel *channel1 = channel_new(connection_fd, EVENT_READ, handle_read, handle_write, tcpConnection);
 	tcpConnection->channel = channel1;
 
 	//connectionCompletedCallBack callback

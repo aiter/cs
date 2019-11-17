@@ -5,6 +5,9 @@
 
 # define MAXLINE 4096
 
+void error1(int status, int err, char *fmt, ...) {
+	(void) fprintf(stdout, "[%s] %s\n", "test", "ccccc");
+}
 void error(int status, int err, char *fmt, ...) {
 	va_list ap;
 

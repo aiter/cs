@@ -32,7 +32,7 @@ struct event_loop {
 	struct channel_element *pending_tail;
 
 	pthread_t owner_thread_id;
-	pthread_mutext_t mutex;
+	pthread_mutex_t mutex;
 	pthread_cond_t cond;
 	int socketPair[2];
 	char *thread_name;

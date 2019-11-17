@@ -18,13 +18,13 @@ struct poll_dispatcher_data {
 
 static void *poll_init(struct event_loop *);
 
-static int poll_add(sturct event_loop *, struct channel *);
+static int poll_add(struct event_loop *, struct channel *);
 
-static int poll_del(sturct event_loop *, struct channel *);
+static int poll_del(struct event_loop *, struct channel *);
 
-static int poll_update(sturct event_loop *, struct channel *);
+static int poll_update(struct event_loop *, struct channel *);
 
-static int poll_dispatch(sturct event_loop *, struct timeval *);
+static int poll_dispatch(struct event_loop *, struct timeval *);
 
 static void *poll_clear(struct event_loop *);
 
@@ -54,7 +54,7 @@ void *poll_init(struct event_loop *eventLoop) {
 	return pollDispatcherData;
 }
 
-int poll_add(sturct event_loop *eventLoop, struct channel *channel) {
+int poll_add(struct event_loop *eventLoop, struct channel *channel) {
 	struct poll_dispatcher_data *pollDispatcherData = (struct poll_dispatcher_data *) eventLoop->event_dispatcher_data;
 
 	int fd = channel->fd;

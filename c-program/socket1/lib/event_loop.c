@@ -2,7 +2,7 @@
 #include "event_loop.h"
 #include "common.h"
 #include "log.h"
-#include "event_dispathcer.h"
+#include "event_dispatcher.h"
 #include "channel.h"
 #include "utils.h"
 
@@ -203,7 +203,7 @@ struct event_loop *event_loop_init() {
 
 struct event_loop *event_loop_init_with_name(char *thread_name) {
 	struct event_loop *eventLoop = malloc(sizeof(struct event_loop));
-	pthread_mutxt_init(&eventLoop-mutex, NULL);
+	pthread_mutxt_init(&eventLoop->mutex, NULL);
 	pthread_cond_init(&eventLoop->cond, NULL);
 
 	if (thread_name != NULL) {

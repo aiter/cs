@@ -9,7 +9,7 @@ int tcp_server(int port) {
 	int listenfd;
 	listenfd = socket(AF_INET, SOCK_STREAM, 0);
 
-	struct sockaddr in server_addr;
+	struct sockaddr_in server_addr;
 	bzero(&server_addr, sizeof(server_addr));
 	server_addr.sin_family = AF_INET;
 	server_addr.sin_addr.s_addr = htonl(INADDR_ANY);

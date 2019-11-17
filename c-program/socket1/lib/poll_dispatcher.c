@@ -84,3 +84,55 @@ int poll_add(struct event_loop *eventLoop, struct channel *channel) {
 
 	return 0;
 }
+
+int poll_del(struct event_loop *eventLoop, struct channel *channel1) {
+	struct poll_dispatcher_data *pollDispatcherData  = (struct poll_dispatcher_data *) eventLoop->event_dispatcher_data;
+	int fd = channel1->fd;
+
+	//找到fd对应的记录
+	int i = 0;
+	for (i = 0; i < INIT_POLL_SIZE; i++) {
+		if (pollDispatcherData->event_set[i].fd == fd) {
+			pollDispatcherData->event_set[i].fd = -1;
+			break;
+		}
+	}
+
+	yolanda_msgx("poll delete channel fd==%d, %s", fd, eventLoop->thread_name);
+	if (i > INIT_POLL_SIZE) {
+		LOG_ERR("can not find fd, poll delete error");
+	}
+
+	return 0;
+}
+
+int poll_update(struct event_loop *eventLoop, struct channel *channel1) {
+	struct poll_dispatcher_data *pollDispatcherData  = (struct poll_dispatcher_data *) eventLoop->event_dispatcher_data;
+	int fd = channel1->fd;
+
+	int events = 0;
+	if (channel1->events & EVENT_READ) {
+		events = events | POLLRDNORM;
+	}
+
+	if (channel1->events & EVENT_WRITE) {
+		events = events | POLLWRNORM;
+	}
+
+	//找到fd对应的记录
+	int i = 0;
+	for (i = 0; i < INIT_POLL_SIZE; i++) {
+		if (pollDispatcherData->event_set[i].fd == fd) {
+			pollDispatcherData->event_set[i].events = events;
+			break;
+		}
+	}
+
+	yolanda_msgx("poll updated channel fd==%d, %s", fd, eventLoop->thread_name);
+	if (i > INIT_POLL_SIZE) {
+		LOG_ERR("can not find fd , poll updated error");
+	}
+
+	return 0;
+}
+

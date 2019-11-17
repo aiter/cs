@@ -49,6 +49,8 @@ int handle_write(void *data) {
 	} else {
 		yolanda_msgx("handle_write for tcp connection %s", tcpConnection->name);
 	}
+
+	return 0;
 }
 
 struct tcp_connection *tcp_connection_new(int connection_fd, struct event_loop *eventLoop, connection_completed_call_back connectionCompletedCallBack, connection_closed_call_back connectionClosedCallBack, message_call_back messageCallBack, write_completed_call_back writeCompletedCallBack) {
@@ -62,7 +64,7 @@ struct tcp_connection *tcp_connection_new(int connection_fd, struct event_loop *
 	tcpConnection->output_buffer = buffer_new();
 
 	char *buf = malloc(16);
-	sprintf(buf, "connection-%d\0", connection_fd);
+	sprintf(buf, "connection-%d", connection_fd);
 	tcpConnection->name = buf;
 
 	//add event read for the new connection

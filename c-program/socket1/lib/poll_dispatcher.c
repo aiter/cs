@@ -26,7 +26,7 @@ static int poll_update(struct event_loop *, struct channel *);
 
 static int poll_dispatch(struct event_loop *, struct timeval *);
 
-static void *poll_clear(struct event_loop *);
+static void poll_clear(struct event_loop *);
 
 const struct event_dispatcher poll_dispatcher = {
 	"poll",
@@ -135,4 +135,55 @@ int poll_update(struct event_loop *eventLoop, struct channel *channel1) {
 
 	return 0;
 }
+
+int poll_dispatch(struct event_loop *eventLoop, struct timeval *timeval) {
+	struct poll_dispatcher_data *pollDispatcherData  = (struct poll_dispatcher_data *) eventLoop->event_dispatcher_data;
+	
+	int ready_number = 0;
+	int timewait = timeval->tv_sec * 1000;
+	if ((ready_number  = poll(pollDispatcherData->event_set, INIT_POLL_SIZE, timewait)) < 0) {
+		error(1, errno, "poll failed");
+	}
+
+	if (ready_number <= 0) {
+		return 0;
+	}
+
+	int i;
+	for (i = 0; i <= INIT_POLL_SIZE; i++) {
+		int socket_fd;
+		struct pollfd pollfd = pollDispatcherData->event_set[i];
+		if ((socket_fd = pollfd.fd) < 0)
+			continue;
+
+		//有事件发生
+		if (pollfd.revents > 0) {
+			yolanda_msgx("get message channel  i==%d, fd==%d, %s", i, socket_fd, eventLoop->thread_name);
+
+			if (pollfd.revents & POLLRDNORM) {
+				channel_event_activate(eventLoop, socket_fd, EVENT_READ);
+			}
+
+			if(pollfd.revents & POLLWRNORM) {
+				channel_event_activate(eventLoop, socket_fd, EVENT_WRITE);
+			}
+
+			if (--ready_number <= 0) 
+				break;
+		}
+
+	}
+
+	return 0;
+}
+
+void poll_clear(struct event_loop *eventLoop) {
+	struct poll_dispatcher_data *pollDispatcherData  = (struct poll_dispatcher_data *) eventLoop->event_dispatcher_data;
+
+	free(pollDispatcherData->event_set);
+	pollDispatcherData->event_set = NULL;
+	free(pollDispatcherData);
+	eventLoop->event_dispatcher_data = NULL;
+}
+	
 

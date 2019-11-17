@@ -81,7 +81,7 @@ int event_loop_update_channel_event(struct event_loop *eventLoop, int fd, struct
 }
 
 // in the i/o thread
-iint event_loop_handle_pending_add(struct event_loop *eventLoop, int fd, struct channel *channel1) {
+int event_loop_handle_pending_add(struct event_loop *eventLoop, int fd, struct channel *channel1) {
 	yolanda_msgx("add channel fd == %d, %s", fd, eventLoop->thread_name);
 	struct channel_map *map = eventLoop->channelMap;
 
@@ -95,10 +95,10 @@ iint event_loop_handle_pending_add(struct event_loop *eventLoop, int fd, struct 
 
 	//第一次创建，增加
 	if ((map)->entries[fd] == NULL) {
-		map->entries[fd] = channel;
+		map->entries[fd] = channel1;
 		//add channel
 		struct event_dispatcher *eventDispatcher = eventLoop->eventDispatcher;
-		eventDispatcher->add(eventLoop, channel);
+		eventDispatcher->add(eventLoop, channel1);
 		return 1;
 	}
 
@@ -106,7 +106,7 @@ iint event_loop_handle_pending_add(struct event_loop *eventLoop, int fd, struct 
 }
 
 // in the i/o thread
-int event_loop_handle_pending_remove(struct envet_loop *eventLoop, int fd, struct channel *channel1) {
+int event_loop_handle_pending_remove(struct event_loop *eventLoop, int fd, struct channel *channel1) {
 	struct channel_map *map = eventLoop->channelMap;
 	assert(fd == channel1->fd);
 
@@ -233,7 +233,7 @@ struct event_loop *event_loop_init_with_name(char *thread_name) {
 	eventLoop->pending_head = NULL;
 	eventLoop->pending_tail = NULL;
 
-	struct channel *channle = channel_new(eventLoop->socketPair[1],EVENT_READ, handleWakeup, NULL, eventLoop);
+	struct channel *channel = channel_new(eventLoop->socketPair[1],EVENT_READ, handleWakeup, NULL, eventLoop);
 	event_loop_add_channel_event(eventLoop, eventLoop->socketPair[0], channel);
 
 	return eventLoop;

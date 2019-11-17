@@ -27,7 +27,7 @@ int event_loop_thread_init(struct event_loop_thread *eventLoopThread, int i) {
 	eventLoopThread->thread_tid = 0;
 
 	char *buf = malloc(16);
-	sprintf(buf, "Thread-%d\0", i + 1);
+	sprintf(buf, "Thread-%d", i + 1);
 	eventLoopThread->thread_name = buf;
 
 	return 0;

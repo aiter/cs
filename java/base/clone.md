@@ -34,3 +34,23 @@ public class Employee {
     }
 }
 ```
+
+* json是如何new对象的
+> 一般的json工具，需要对象有一个默认的构造器(没有参数的构造器)。Jackson不要求必须有默认的构造器
+```
+  public class CtorBean
+{
+  public final String name;
+  public final int age;
+
+  @JsonCreator // constructor can be public, private, whatever
+  private CtorBean(@JsonProperty("name") String name,
+    @JsonProperty("age") int age)
+  {
+      this.name = name;
+      this.age = age;
+  }
+}
+```
+* clone是如何new对象的，是否调度用构造器
+* Boolean & BigInteger

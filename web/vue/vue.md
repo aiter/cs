@@ -6,3 +6,10 @@
   * Element UI、
   * Ant Design Vue、
   * iView
+* 效率工具
+  * ESLint、
+  * Prettier、
+  * vue-devtools
+* webpack
+* babel
+* Echarts

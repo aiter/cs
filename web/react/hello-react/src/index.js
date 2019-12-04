@@ -6,9 +6,13 @@ import * as serviceWorker from './serviceWorker';
 
 class Header extends Component {
     render() {
+        const name = 'aiter'
+        const className = 'header'
         return (
             <div>
-                <h1> React aiter</h1>
+                <h1> React aiter {name} {(function () { return 'is good'})()}</h1>
+
+                <div className={className}></div>
             </div>
         )
     }

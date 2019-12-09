@@ -1,7 +1,9 @@
 ### 类加载
 
-Loading --> Verification --> Preparation --> Resolution --> Initialization --> Using --> Unloading
-		|				        Linking                |
+| 1 | 2 | 3 | 4 | 5 |
+| --- | --- | --- | --- | --- |
+|Loading | Verification  Preparation  Resolution |Initialization |  Using| Unloading|
+| | Linking | |  | |
 
 ### import的都加载吗？
 > 无关，只有在真正使用时，才会加载。

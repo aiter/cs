@@ -75,3 +75,17 @@ sentinel parallel-syncs resque 5
 ```shell
 sentinel monitor <master-group-name> <ip> <port> <quorum>
 ```
+
+### 复制
+* 主节点(master)发送commands给副本(replica)
+* 主从断开链接后，再重新链接，会同步未同步的部分(那些没有同步的commands). 什么机制来做到的呢？和mysql的方式有什么异同
+* 如果部分同步不成功，那么会请求全量同步。master会把数据打一个快照发送给replica，然后再发送实时更新的commands。
+*
+* 默认使用异步复制，支持同步复制
+> 复制和高可用方案容易混为一谈。
+
+* 可以一主多副本
+* 副本也可以直接连接另一个副本，就想和连接master一样
+* 复制在master上是非阻塞的。
+* 复制在replica上也是非阻塞的。
+* 方便横向扩展、数据安全、高可用

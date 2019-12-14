@@ -13,3 +13,4 @@
 * webpack
 * babel
 * Echarts
+* axios API-Mock

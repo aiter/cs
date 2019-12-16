@@ -30,7 +30,7 @@ char * longestCommonPrefix(char ** strs, int strsSize){
 
 int main()
 {
-	char *strs[] = {"flower","flow","flight"};
+	char *strs[3] = {"flower","flow","flight"};
 	char * str = longestCommonPrefix(strs,3);
 	printf("%s\n",str);
 	exit(0);

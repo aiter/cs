@@ -22,6 +22,8 @@
     ObjectMapper objectMapper = new ObjectMapper();
     String jsonStr =objectMapper.writeValueAsString(jsonItem);
 ```
+* transient 修饰的字段不被序列化
+* static 修饰的字段不被序列化
 
 JsonFactory
 > 用来创建 JsonParser  JsonGenrator
@@ -36,10 +38,10 @@ TypeFactory
 > * WildcardType
 
 ### fastjson & jackson 区别
-| data-binding | private字段 | public字段 | private方法 | public方法 | 默认值 | 非getXxx方法| 无参数构造器 |
-| --- | --- | --- | --- | --- | --- | --- | --- |
-|fastjson| 不输出 | 输出 | 不输出 | 输出 | string是null时不输出 | @JsonProperty(value = "xxx") | 支持@JSONCreator |
-|jackson | 输出   | 输出 | 输出 | 输出 | 输出null| @JSONField(name = "xxx")| 支持@JsonCreator |
+| data-binding | private字段 | public字段 | private方法 | public方法 | 默认值 | 非getXxx方法| 无参数构造器 |transient字段|static字段|
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |--- | 
+|fastjson| 不输出 | 输出 | 不输出 | 输出 | string是null时不输出 | @JsonProperty(value = "xxx") | 支持@JSONCreator | 不输出|不输出|
+|jackson | 输出(必须@JsonProperty)   | 输出 | 输出(必须@JsonProperty) | 输出 | 输出null| @JSONField(name = "xxx")| 支持@JsonCreator |不输出|不输出|
 
 Class
 > 实现了 Serializable、GenericDeclaration、Type、AnnotatedElement

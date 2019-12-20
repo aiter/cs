@@ -36,13 +36,22 @@ public class Employee {
 ```
 #### 为什么建议不使用clone了
 [Copy Constructor versus Cloning](https://www.artima.com/intv/bloch.html#part13)
+[Java Copy Constructor](https://www.baeldung.com/java-copy-constructor)
 
 #### 设计缺陷
-* Cloneable 接口并没有一个clone方法
-* 不是深复制
+* Cloneable 接口并没有一个clone方法。而且调用clone()方法时，需要处理CloneNotSupportedException异常
+* 不是深复制。都是原始类型(private types)或者不可变类(immutable types)时，没有问题。
+* clone方法中，不能初始化final字段的值
+* clone方法是返回Object的引用，需要强制的类型转换，如`(Item)super.clone()`
 
 #### 那怎样复制对象
 * 复制构造器 Copy Constructor
+> * 创建一个对象时，使用另一个相同类的对象
+> * 自行决定如何复制对象
+> * 不需要把相关逻辑写在其他类中(比如工厂方法中)，封装性更好，也更不容易出错(比如新增字段后)
+> * 深复制(deep copy)。有引用类型，可以新创建对象来达到深复制
+> * 构造器中，可以初始化final字段的值
+> * 复制构造器，需要注意继承是的复制构造器
 * 静态工厂方法  static factory methods
 
 * json是如何new对象的

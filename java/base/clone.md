@@ -41,6 +41,7 @@ public class Employee {
 #### 设计缺陷
 * Cloneable 接口并没有一个clone方法。而且调用clone()方法时，需要处理CloneNotSupportedException异常
 * 不是深复制。都是原始类型(private types)或者不可变类(immutable types)时，没有问题。
+* 如果要深复制，需要在clone方法中特别处理(主要是处理引用对象的复制)，如果应用的对象，本身并没有实现Cloneable接口，并重写clone()方法，需要单独new对象(处理更复制)
 * clone方法中，不能初始化final字段的值
 * clone方法是返回Object的引用，需要强制的类型转换，如`(Item)super.clone()`
 

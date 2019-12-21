@@ -73,4 +73,7 @@ public class Employee {
 }
 ```
 * clone是如何new对象的，是否调度用构造器
+> * native方法
+> * 不调用对应的构造器
 * Boolean & BigInteger
+> * 浅复制。复制对象指向同一个对象

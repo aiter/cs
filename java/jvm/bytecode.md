@@ -30,6 +30,27 @@
 | u2 | Attributes Count |  |
 | Attributes Count | Attributes |  |
 
+#### 字段表集合
+| 类型 | 名称 | 数量 |
+| --- | --- | --- |
+| u2 | access_flogs | 1 |
+| u2 | name_index | 1 |
+| u2 | descriptor_index | 1 |
+| u2 | attributes_count | 1 |
+| u2 | attribute_info | attributes_count |
+
+#####  访问标志(access_flogs)
+| 名称 | 标志值 | 含义 |
+| --- | --- | --- |
+| ACC_PUBLIC | 0x0001 | 字段是否是public |
+| ACC_PRIVATE | 0x0002 | 字段是否是private |
+| ACC_PROTECTED| 0x0004 | 字段是否是protected |
+| ACC_static| 0x0008 | 字段是否是static |
+| ACC_final | 0x0010 | 字段是否是final |
+| ACC_volatile| 0x0040 | 字段是否是volatile |
+| ACC_transient| 0x0080 | 字段是否是transient |
+| ACC_synthetic| 0x1000 | 是否是编译器自动产生 |
+| ACC_enum| 0x4000 | 是否是enum |
 
 #### 方法表集合
 * 访问标志(access_flogs)
@@ -73,3 +94,4 @@
 | InnerClasses | 类文件 | 内部类列表 |
 | LineNumberTable | Code 属性 | Java 源码的行号与字节码指令的对应关系 |
 | LocalVariableTable | Code 属性 | 方法的局部变量描述 |
+| StackMapTable | Code 属性 | JDK1.6新增。

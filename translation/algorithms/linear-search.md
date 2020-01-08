@@ -22,6 +22,8 @@ https://www.geeksforgeeks.org/linear-search/
 * 如果找到x值，返回下标
 * 如果没有找到任何值，返回-1
 ![](./Linear_Search.png)
+![](Linear-Search.png)
+
 
 ```c
 // C++ code to linearly search x in arr[]. If x 

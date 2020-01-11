@@ -117,3 +117,11 @@ int main(void)
 
 输出：
 > Element is present at index 3
+
+时间复杂度：
+二分查找的时间复杂度可以写为：
+> T(n) = T(n/2) +c   O(Logn)
+
+空间复杂度:
+> O(1) 迭代实现
+> O(Logn) 递归实现，

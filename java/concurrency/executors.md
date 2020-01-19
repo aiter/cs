@@ -1,5 +1,5 @@
 ### ThreadPoolExecutor
-|  |coreSize | maxSize | BlockingQueue | 
+|    |coreSize | maxSize | BlockingQueue | 
 | --- | --- | --- |---|
 |newFixedThreadPool | n | n | LinkedBlockingQueue|
 |newSingleThreadExecutor| 1 | 1 | LinkedBlockingQueue|

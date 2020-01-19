@@ -5,6 +5,7 @@
 |newSingleThreadExecutor| 1 | 1 | LinkedBlockingQueue|
 |newCachedThreadPool| 0 | Integer.MAX_VALUE | SynchronousQueue |
 |newSingleThreadScheduledExecutor| n | Integer.MAX_VALUE | DelayedWorkQueue |
+|newWorkStealingPool(ForkJoinPool)|  | | |
 
 #### BlockingQueue
 * LinkedBlockingQueue 无界队列(最大可以放Integer.MAX_VALUE) 

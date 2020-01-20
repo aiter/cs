@@ -12,6 +12,10 @@
 * SynchronousQueue 无空间队列
 * DelayedWorkQueue 
 
+* ArrayBlockingQueue  队列元素是数组；使用notEmpty、notFull两个Condition来自同一个Lock
+* LinkedBlockingQueue 队列元素是链表；使用notEmpty、notFull两个Condition来自2个Lock
+* PriorityBlockingQueue  优先级阻塞队列
+
 #### ExecutorService
 
 ```java

@@ -15,3 +15,13 @@
 > countDown:sync.releaseShared(1);
 > await:sync.acquireSharedInterruptibly(1);
 > await(long,TimeUnit):sync.tryAcquireSharedNanos(1, unit.toNanos(timeout));
+
+## CyclicBarrier
+```
+final CyclicBarrier barrier;
+Runnable barrierAction =
+ new Runnable() { public void run() { mergeRows(...); }};
+ barrier = new CyclicBarrier(N, barrierAction);
+
+//每个线程完成任务后，调用barrier.await();
+``` 

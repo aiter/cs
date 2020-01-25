@@ -25,3 +25,15 @@ Runnable barrierAction =
 
 //每个线程完成任务后，调用barrier.await();
 ``` 
+
+## AbstractQueuedSynchronizer
+### AbstractQueuedSynchronizer extends AbstractOwnableSynchronizer
+```java
+     * <pre>
+     *      +------+  prev +-----+       +-----+
+     * head |      | <---- |     | <---- |     |  tail
+     *      +------+       +-----+       +-----+
+     * </pre>
+```
+* Node:
+* state:

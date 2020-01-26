@@ -36,6 +36,7 @@ Runnable barrierAction =
      * </pre>
 ```
 > rely on
- first-in-first-out (FIFO) wait queues
+ first-in-first-out (FIFO) wait queues 。队列
 * Node:
 * state:
+* 从尾部原子插入node，从头部原子出队列一个node

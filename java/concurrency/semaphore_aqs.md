@@ -35,5 +35,7 @@ Runnable barrierAction =
      *      +------+       +-----+       +-----+
      * </pre>
 ```
+> rely on
+ first-in-first-out (FIFO) wait queues
 * Node:
 * state:

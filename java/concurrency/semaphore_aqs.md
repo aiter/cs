@@ -37,8 +37,8 @@ Runnable barrierAction =
 ```
 > rely on
  first-in-first-out (FIFO) wait queues 。队列
-* Node:
-* state:
+* Node: 线程封装成节点，作为队列的节点。
+* state: 核心部分
 * 从尾部原子插入node，从头部原子出队列一个node
 * Exclusive:独占
 * Share:共享

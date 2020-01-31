@@ -26,6 +26,19 @@ Runnable barrierAction =
 //每个线程完成任务后，调用barrier.await();
 ``` 
 
+## ReentrantLock
+```
+private final Sync sync;
+Sync extends AbstractQueuedSynchronizer {
+
+}
+
+NonfairSync extends Sync {}
+FairSync extends Sync {}
+
+
+```
+
 ## AbstractQueuedSynchronizer
 ### AbstractQueuedSynchronizer extends AbstractOwnableSynchronizer
 ```java

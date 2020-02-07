@@ -1,6 +1,9 @@
 ### jdk Serializer
 
 #### 如何让一个类支持序列化
+实现  java.io.Serializable
+
+添加： private static final long serialVersionUID = 8683452581122892189L;
 
 #### 自己如何自定义序列化
 private void writeObject(java.io.ObjectOutputStream s)

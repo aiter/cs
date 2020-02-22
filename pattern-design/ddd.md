@@ -5,3 +5,4 @@
 ### 充血模型
 > Rich Domain Model
 > 数据和业务都封装到一个类中
+> service变得简单。Domain(xxO)含数据也业务

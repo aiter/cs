@@ -14,6 +14,19 @@
 * 原型 Prototype
 > 复制、clone对象
 
+## 结构型
+
+* 代理 proxy
+
+* 装饰器 
+
+* 桥接
+
+* 适配器
+
+* 门面 Facade
+
+* 组合 Composite
 
 ## 行为型
 * 责任链

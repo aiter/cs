@@ -8,10 +8,11 @@ https://cn.aliyun.com/product/petadata
 >
 > Experience Greenplum Database, an open-source massively parallel data platform for analytics, machine learning and AI 
 > * open-source 开源
-> * massively parallel 大量并行
+> * massively parallel postgres(MPP) 大量并行
 > * analytics 数据分析
 > * machine learning 机器学习
 > * AI 人工智能
+
 https://greenplum.org/
 
 ## postgresql

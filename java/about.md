@@ -11,3 +11,9 @@
 * 前 5 个原始设备制造商均提供了 Java ME
 
 https://www.java.com/zh_CN/about/
+
+### 2020
+3.17  JDK 14
+> * switch
+> * Records
+> * help NullPointerException  可以打印具体哪个对象为空

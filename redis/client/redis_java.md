@@ -13,4 +13,5 @@
 > * 支持通过SSL独立(standalone)的redis服务器
 > * 支持哨兵(sentinel)的方式
 > * 支持集群(cluster)的方式
-
+> * fully non-blocking
+> * Reactive, Asynchronous and Synchronous

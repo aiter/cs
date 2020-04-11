@@ -1,4 +1,5 @@
 ## visitor 访问者模式
+> 日常不建议使用，如果能用其他方式实现，为什么？ 比较难理解
 ```java
 
 public abstract class ResourceFile {

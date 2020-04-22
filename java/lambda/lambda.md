@@ -1,5 +1,5 @@
 ## FunctionalInterface
-From dock
+From doc
 > a functional interface has exactly one abstract method. Since default methods have an implementation, they are not abstract. If an interface declares an abstract method overriding one of the public methods of java.lang.Object, that also does not count toward the interface's abstract method count since any implementation of the interface will have an implementation from java.lang.Object or elsewhere
 > * one abstract method
 > * You cannot have more than one method besides `static`, `default and abstract methods` that override methods in Object in your @FunctionalInterface or any other interface used as a functional interface.

@@ -1,5 +1,6 @@
 ## 策略模式 Strategy
 > 定义个算法族，可以方便的相互替换
+> * 场景1，可以避免复杂分支逻辑(if else/  switch)
 
 ```java
   public interface Strategy {

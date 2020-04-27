@@ -74,6 +74,7 @@ null
 ```
 
 ### 弱引用
+> guava 中的Enums使用WeakReference 来缓存
 ```java
 public class WeakReferenceTest {
 

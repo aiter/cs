@@ -42,6 +42,21 @@ public Reverselinkedlist {
         return node;
     }
 
+    public void addFirst(int object) {
+        Node newNode = new Node(object);
+        newNode.next = head;
+        head = newNode;
+    }
+
+    public void addLast(int object) { // here I don't need a tail reference
+        Node temp = head;
+        while(temp.next != null) {
+            temp = temp.next;
+        }
+
+        temp.next = new Node(object);
+    } 
+
     // prints content of double linked list 
     void printList(Node node) 
     { 

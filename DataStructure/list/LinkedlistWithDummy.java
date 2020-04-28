@@ -1,4 +1,4 @@
-public LinkedlistWithDummy {
+public class LinkedlistWithDummy {
     private static class Node { // the Node class is defined within the SimpleList class
         Object object;
         Node next;
@@ -55,4 +55,31 @@ public LinkedlistWithDummy {
     public int size() {
         return size;
     }
+     
+        // prints content of double linked list 
+    public void printList() 
+    { 
+        Node node = head.next;
+        while (node != null) { 
+            System.out.print(node.object + " "); 
+            node = node.next; 
+        } 
+    } 
+
+    public static void main(String[] args) 
+    { 
+        LinkedlistWithDummy list = new LinkedlistWithDummy(); 
+        list.addLast(15); 
+        list.addLast(4); 
+        list.addLast(20); 
+  
+        System.out.println("Given Linked list"); 
+        list.printList(); 
+        list.addFirst(77);
+        list.addLast(188);
+        System.out.println("");
+        System.out.println("add item to first linked list "); 
+        list.printList();  
+        System.out.println("");
+    } 
 }

@@ -1,4 +1,4 @@
-public Reverselinkedlist {
+public class Reverselinkedlist {
     static Node head; 
   
     static class Node { 
@@ -43,6 +43,7 @@ public Reverselinkedlist {
     }
 
     public void addFirst(int object) {
+        //这个地方如果要插入在链表第一个位置，复杂一点
         Node newNode = new Node(object);
         newNode.next = head;
         head = newNode;
@@ -68,7 +69,7 @@ public Reverselinkedlist {
   
     public static void main(String[] args) 
     { 
-        LinkedList list = new LinkedList(); 
+        Reverselinkedlist list = new Reverselinkedlist(); 
         list.head = new Node(85); 
         list.head.next = new Node(15); 
         list.head.next.next = new Node(4); 
@@ -80,5 +81,10 @@ public Reverselinkedlist {
         System.out.println(""); 
         System.out.println("Reversed linked list "); 
         list.printList(head); 
+        System.out.println("");
+        list.addFirst(77);
+        System.out.println("add item to first linked list "); 
+        list.printList(head);  
+        System.out.println("");
     } 
 }

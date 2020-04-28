@@ -17,6 +17,7 @@
 > 指定注解一个方法，这个方法生产一个被Spring容器管理的bean对象
 * 在Method上的注解
 * 和Configuration一起使用，Configuration注解的类，Bean注解类的方法
+* 如果不在Configuration注解的类中，那么就是lite模式
 
 ## profile 
 

@@ -24,6 +24,10 @@ public class ReverseWord{
 
     /*翻转字符串*/
     public static void swapDic(char[] chars,int left,int right){
+		//这里也可以使用for
+		//int mid = start + (end - start) / 2 + 1; //避免int越界
+		//for (int i = start; i < mid; i++) {
+		//}
         while(left<right){
             swap(chars,left,right);
             left++;

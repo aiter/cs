@@ -4,9 +4,11 @@ public class ReverseWord{
         char[] chars=str.toCharArray();
         int left=0;
         int right=chars.length-1;
+		//O(n)  n/2
         swapDic(chars,left,right);
         left=0;
         right=0;
+		//O(n) 
         for(int i=0;i<chars.length;i++){
             if(chars[i]==' '){
                 swapDic(chars,left,right-1);

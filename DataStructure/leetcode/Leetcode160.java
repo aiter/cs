@@ -66,4 +66,36 @@ public class Leetcode160 {
 		return first;
 	}
 
+	class Solution {
+		public ListNode getIntersectionNode(ListNode headA, ListNode headB) {
+			if (headA == null || headB == null) {
+				return null;
+			}
+			// 把B链变成一个环？
+			ListNode last = headB;
+			while (last.next != null) {
+				last = last.next;
+			}
+			last.next = headB;
+			//如果A/B有相交，那么就相当于一个有环链表。
+			ListNode fast = headA;
+			ListNode slow = headA;
+
+			while (fast != null && fast.next != null) {
+				slow = slow.next;
+				fast = fast.next.next;
+				if (slow == fast) {
+					slow = headA;
+					while (slow != fast) {
+						slow = slow.next;
+						fast = fast.next;
+					}
+					last.next = null;
+					return fast;
+				}
+			}
+			last.next = null;
+			return null;
+		}
+	}
 }

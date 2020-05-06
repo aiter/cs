@@ -1,11 +1,8 @@
 /**
- * Write a program to find the node at which the intersection of two singly linked lists begins.
- * 
- * 实际的运用场景是什么？ 主要是思路
  *
- * 来源：力扣（LeetCode）
- * 链接：https://leetcode-cn.com/problems/intersection-of-two-linked-lists
- * 著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。
+ * Remove all elements from a linked list of integers that have value val.
+ *
+ *  https://leetcode-cn.com/problems/remove-linked-list-elements/
  */
 public class Leetcode203 {
     static class ListNode {

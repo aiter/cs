@@ -53,6 +53,9 @@ public class Leetcode234 {
 	}
 
 	public boolean isPalindrome(ListNode head) {
+        if (head == null || head.next == null) {
+            return true;
+        }
 		ListNode first = head;
 		ListNode slow = head;
 		ListNode fast = head;
@@ -61,7 +64,6 @@ public class Leetcode234 {
 			slow = slow.next;
 			fast = fast.next.next;
 		}
-		print(slow);
 		//反转后半部分
 	    ListNode pre = null;
 	    ListNode cur = slow;
@@ -72,7 +74,6 @@ public class Leetcode234 {
 			pre = cur;
 			cur = next;
 		}
-		print(pre);
 
 		//比较？
 		while(first.val == pre.val) {

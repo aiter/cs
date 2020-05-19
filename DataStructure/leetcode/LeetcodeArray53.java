@@ -8,9 +8,6 @@ import java.util.Arrays;
  *
  * If you have figured out the O(n) solution, try coding another solution using the divide and conquer approach, which is more subtle.
  *
- * 来源：力扣（LeetCode）
- * 链接：https://leetcode-cn.com/problems/maximum-subarray
- * 著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。
  */
 public class LeetcodeArray53 {
 
@@ -23,14 +20,18 @@ public class LeetcodeArray53 {
 		dp[0] = nums[0];
 		int res = dp[0];
 		for(int i=1;i<nums.length;i++){
-			dp[i] = Math.max(nums[i],dp[i-1]+nums[i]);
-			res = Math.max(res,dp[i]);
+			dp[i] = max(nums[i],dp[i-1]+nums[i]);
+			res = max(res,dp[i]);
 		}
 		return res;	
     }
 
+	public static int max(int a, int b) {
+		return (a >= b) ? a : b;
+	}
+
 	public static void main(String [] args) {
-		int[][] nums = new int[][]{{1,3,5,6},{1,3,5,6},{1,3,5,6},{1,3,5,6}};
+		int[][] nums = new int[][]{{1,-3,5,6},{1,3,-5,6},{-1,3,5,6},{1,3,5,-6}};
 		for(int j = 0 ; j < nums.length ;j++){
 			int len = maxSubArray(nums[j]);
 			System.out.println("len="+len);
